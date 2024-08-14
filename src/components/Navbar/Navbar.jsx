@@ -1,99 +1,136 @@
 import React, { useState } from "react";
-// import Logo from "../../assets/food-logo.png";
-import { FaCartShopping, FaBars, FaTimes } from "react-icons/fa6";
-import DarkMode from "./DarkMode";
-
-const Menu = [
-  {
-    id: 1,
-    name: "Home",
-    link: "/#",
-  },
-  {
-    id: 2,
-    name: "Services",
-    link: "/#services",
-  },
-  {
-    id: 3,
-    name: "About",
-    link: "/#about",
-  },
-];
+import Logo from "../../assets/logo.png";
+import { FaBars, FaTimes, FaSearch, FaMoon, FaSun } from "react-icons/fa";
+import "./Navbar.css";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("#");
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleMenuClick = (link) => {
     setActiveLink(link);
-    setIsMobileMenuOpen(false); // Close mobile menu on link click
+    setIsMobileMenuOpen(false);
+    const section = document.querySelector(link);
+    section?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle("dark-mode");
   };
 
   return (
-    <>
-      <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200">
-        <div className="container py-3 sm:py-0">
-          <div className="flex justify-between items-center">
-            <div>
-              <a href="#" className="font-bold text-2xl sm:text-3xl flex gap-2">
-                <img src={Logo} alt="Logo" className="w-10" />
-                Foodie
-              </a>
-            </div>
-            <div className="flex justify-between items-center gap-4">
-              <div>
-                <DarkMode />
-              </div>
-              <ul className="hidden sm:flex items-center gap-4">
-                {Menu.map((menu) => (
-                  <li key={menu.id}>
-                    <a
-                      href={menu.link}
-                      className={`inline-block py-4 px-4 hover:text-yellow-500 ${
-                        activeLink === menu.link ? "text-yellow-500" : ""
-                      }`}
-                      onClick={() => handleMenuClick(menu.link)}
-                    >
-                      {menu.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <button className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3">
-                Order
-                <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
-              </button>
-              {/* Mobile Menu Toggle Button */}
-              <button
-                className="sm:hidden text-2xl"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-              </button>
-            </div>
+    <div className={`custom-navbar ${darkMode ? "dark" : ""}`}>
+      <div className="custom-navbar-container">
+        <div className="custom-navbar-content">
+          <div className="custom-navbar-left">
+            <a href="#" className="custom-logo-link">
+              <img src={Logo} alt="Logo" className="custom-logo-img" />
+              Brunch
+            </a>
           </div>
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <ul className="sm:hidden flex flex-col items-center gap-4 mt-4">
-              {Menu.map((menu) => (
-                <li key={menu.id}>
-                  <a
-                    href={menu.link}
-                    className={`inline-block py-4 px-4 hover:text-yellow-500 ${
-                      activeLink === menu.link ? "text-yellow-500" : ""
-                    }`}
-                    onClick={() => handleMenuClick(menu.link)}
-                  >
-                    {menu.name}
-                  </a>
-                </li>
-              ))}
+          <div className="custom-navbar-center">
+            <ul
+              className={`custom-menu ${isMobileMenuOpen ? "mobile-open" : ""}`}
+            >
+              <li>
+                <a
+                  href="#home"
+                  className={`custom-menu-link ${
+                    activeLink === "#home" ? "active" : ""
+                  }`}
+                  onClick={() => handleMenuClick("#home")}
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#menu"
+                  className={`custom-menu-link ${
+                    activeLink === "#menu" ? "active" : ""
+                  }`}
+                  onClick={() => handleMenuClick("#menu")}
+                >
+                  Menu
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#aboutus"
+                  className={`custom-menu-link ${
+                    activeLink === "#aboutus" ? "active" : ""
+                  }`}
+                  onClick={() => handleMenuClick("#aboutus")}
+                >
+                  About Us
+                </a>
+              </li>
             </ul>
-          )}
+          </div>
+          <div className="custom-navbar-right">
+            <div className="custom-search-container">
+              <input
+                type="text"
+                placeholder="Search..."
+                className="custom-search-input"
+              />
+              <button className="custom-search-button">
+                <FaSearch />
+              </button>
+            </div>
+            <div className="custom-theme-toggle" onClick={toggleDarkMode}>
+              {darkMode ? <FaSun /> : <FaMoon />}
+            </div>
+            <button className="custom-order-button">Order</button>
+            <button
+              className="custom-mobile-menu-toggle"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </button>
+          </div>
         </div>
+        {isMobileMenuOpen && (
+          <ul className="custom-mobile-menu">
+            <li>
+              <a
+                href="#home"
+                className={`custom-menu-link ${
+                  activeLink === "#home" ? "active" : ""
+                }`}
+                onClick={() => handleMenuClick("#home")}
+              >
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="#menu"
+                className={`custom-menu-link ${
+                  activeLink === "#menu" ? "active" : ""
+                }`}
+                onClick={() => handleMenuClick("#menu")}
+              >
+                Menu
+              </a>
+            </li>
+            <li>
+              <a
+                href="#aboutus"
+                className={`custom-menu-link ${
+                  activeLink === "#aboutus" ? "active" : ""
+                }`}
+                onClick={() => handleMenuClick("#aboutus")}
+              >
+                About Us
+              </a>
+            </li>
+          </ul>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
